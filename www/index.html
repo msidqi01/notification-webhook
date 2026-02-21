@@ -1,40 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Notification Webhook</title>
-
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: white;
-            text-align: center;
-            padding-top: 60px;
-        }
-
-        .box{
-            background: #1e293b;
-            margin: 20px;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,.4);
-        }
-
-        button{
-            background: #22c55e;
-            border: none;
-            padding: 14px 22px;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notification Webhook</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; padding: 18px; }
+    .card { padding: 14px; border: 1px solid #ddd; border-radius: 12px; }
+    button { padding: 10px 12px; border-radius: 10px; border: 0; cursor: pointer; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
+    code { background:#f6f6f6; padding: 2px 6px; border-radius: 6px; }
+  </style>
 </head>
+<body>
+  <h2>Notification Webhook</h2>
 
+  <div class="card">
+    <div id="status">Menunggu Cordova...</div>
+
+    <div class="row">
+      <button onclick="openNotifSettings()">Buka Akses Notifikasi</button>
+      <button onclick="checkStatus()">Cek Status</button>
+    </div>
+
+    <p style="margin-top:12px">
+      Jika status <b>OFF</b>, klik <b>Buka Akses Notifikasi</b>, lalu aktifkan akses untuk app ini.
+    </p>
+  </div>
+
+  <script src="cordova.js"></script>
+  <script>
+    function setStatus(txt) {
+      document.getElementById('status').textContent = txt;
+    }
+
+    function checkStatus() {
+      if (!window.NotifAccess) {
+        setStatus("Plugin NotifAccess belum siap.");
+        return;
+      }
+      window.NotifAccess.isEnabled(function (v) {
+        setStatus("Notification Access: " + (String(v) === "1" ? "ON ✅" : "OFF ❌"));
+      }, function (err) {
+        setStatus("Gagal cek status: " + err);
+      });
+    }
+
+    function openNotifSettings() {
+      if (!window.NotifAccess) {
+        setStatus("Plugin NotifAccess belum siap.");
+        return;
+      }
+      window.NotifAccess.requestPermission(function () {
+        setStatus("Membuka halaman Akses Notifikasi...");
+      }, function (err) {
+        setStatus("Gagal membuka settings: " + err);
+      });
+    }
+
+    document.addEventListener('deviceready', function () {
+      setStatus("Cordova siap. Mengecek izin...");
+      // auto-check + auto-open kalau belum enabled
+      window.NotifAccess.isEnabled(function (v) {
+        if (String(v) === "1") {
+          setStatus("Notification Access: ON ✅");
+        } else {
+          setStatus("Notification Access: OFF ❌ (membuka Settings...)");
+          openNotifSettings();
+        }
+      }, function (err) {
+        setStatus("Error: " + err);
+      });
+    }, false);
+  </script>
+</body>
+</html>
 <body>
 
     <div class="box">
