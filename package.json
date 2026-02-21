@@ -1,11 +1,19 @@
 {
   "name": "notification-webhook",
+  "displayName": "Notification Webhook",
   "version": "1.0.0",
-  "private": true,
-  "description": "Cordova Notification Webhook",
+  "description": "Send Android notifications to webhook",
+  "main": "index.js",
+  "scripts": {
+    "start": "cordova run android",
+    "build": "cordova build android"
+  },
   "dependencies": {},
   "devDependencies": {},
   "cordova": {
+    "platforms": [
+      "android"
+    ],
     "plugins": {}
   }
 }
