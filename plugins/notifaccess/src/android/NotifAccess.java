@@ -8,21 +8,26 @@ import android.text.TextUtils;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class NotifAccess extends CordovaPlugin {
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+
         if ("requestPermission".equals(action)) {
             openNotificationListenerSettings(callbackContext);
             return true;
         }
+
         if ("isEnabled".equals(action)) {
             boolean enabled = isNotificationServiceEnabled(this.cordova.getActivity());
             callbackContext.success(enabled ? 1 : 0);
             return true;
         }
+
         return false;
     }
 
@@ -37,10 +42,13 @@ public class NotifAccess extends CordovaPlugin {
         }
     }
 
-    // cek apakah user sudah enable Notification Listener untuk app ini
     private boolean isNotificationServiceEnabled(Context context) {
         String pkgName = context.getPackageName();
-        final String flat = Settings.Secure.getString(context.getContentResolver(), "enabled_notification_listeners");
+        final String flat = Settings.Secure.getString(
+                context.getContentResolver(),
+                "enabled_notification_listeners"
+        );
+
         if (TextUtils.isEmpty(flat)) return false;
 
         final String[] names = flat.split(":");
@@ -51,8 +59,5 @@ public class NotifAccess extends CordovaPlugin {
             }
         }
         return false;
-    }
-}            return false;
-        }
     }
 }
