@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java (Temurin 17)
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
@@ -35,18 +35,34 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
-      - name: Clean Android Platform
+      - name: Show versions (debug)
         run: |
-          cordova platform rm android || true
+          java -version
+          node -v
+          npm -v
+          cordova -v
 
-      - name: Add Android platform (fresh)
-        run: cordova platform add android@latest
+      # OPTIONAL: bersihin biar gak nyangkut cache project (penting kalau kamu sering ubah plugin)
+      - name: Clean cordova artifacts
+        run: |
+          rm -rf platforms plugins node_modules package-lock.json
+          mkdir -p plugins
 
-      - name: Prepare Cordova
+      - name: Add Android platform
+        run: cordova platform add android
+
+      - name: Install local plugin (notifaccess)
+        run: cordova plugin add ./plugins/notifaccess
+
+      # kalau kamu masih pakai plugin notification listener dari coconauts:
+      - name: Install notification listener plugin
+        run: cordova plugin add https://github.com/coconauts/NotificationListener-cordova
+
+      - name: Prepare
         run: cordova prepare android
 
-      - name: Build debug APK
-        run: cordova build android --debug
+      - name: Build debug APK (with more logs)
+        run: cordova build android --debug -- --stacktrace --info
 
       - name: Collect APK
         run: |
