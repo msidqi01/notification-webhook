@@ -1,0 +1,11 @@
+{
+  "name": "notification-webhook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cordova Notification Webhook",
+  "dependencies": {},
+  "devDependencies": {},
+  "cordova": {
+    "plugins": {}
+  }
+}
