@@ -12,8 +12,6 @@
   "devDependencies": {},
   "cordova": {
     "platforms": ["android"],
-    "plugins": {
-      "com.dormasaaktif.notifaccess": {}
-    }
+    "plugins": {}
   }
 }
