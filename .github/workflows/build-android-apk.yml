@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java (Temurin 11)
+      - name: Setup Java (Temurin 17)
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
@@ -54,6 +54,18 @@ jobs:
 
       - name: Add Android platform
         run: cordova platform add android
+
+      - name: Install Cordova plugins
+        run: |
+          cordova plugin add https://github.com/coconauts/NotificationListener-cordova
+          cordova plugin add ./plugins/notifaccess
+          cordova plugin ls
+
+      - name: Debug manifest contains NotificationListenerService
+        run: |
+          echo "=== Search NotificationListenerService in platforms ==="
+          grep -R "NotificationListenerService" -n platforms || true
+          grep -R "BIND_NOTIFICATION_LISTENER_SERVICE" -n platforms || true
 
       - name: Build debug APK
         run: cordova build android --debug
