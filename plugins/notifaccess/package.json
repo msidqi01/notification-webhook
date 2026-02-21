@@ -1,9 +1,21 @@
 {
-  "name": "com.dormasaaktif.notifaccess",
+  "name": "notification-webhook",
+  "displayName": "Notification Webhook",
   "version": "1.0.0",
-  "description": "Notification Access Helper (Cordova plugin)",
+  "description": "Send Android notifications to webhook",
+  "main": "index.js",
+  "scripts": {
+    "build": "cordova build android --debug",
+    "prepare": "cordova prepare android"
+  },
+  "dependencies": {},
+  "devDependencies": {},
   "cordova": {
-    "id": "com.dormasaaktif.notifaccess",
-    "platforms": ["android"]
+    "platforms": ["android"],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "https://github.com/coconauts/NotificationListener-cordova": {},
+      "plugins/notifaccess": {}
+    }
   }
 }
