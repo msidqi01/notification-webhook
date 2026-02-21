@@ -1,40 +1,94 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'"></meta>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notification Webhook</title>
 
-    <meta name="format-detection" content="telephone=no"></meta>
-    <meta name="msapplication-tap-highlight" content="no"></meta>
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding-top: 60px;
+        }
 
-    <link rel=stylesheet type=text/css href=css/index.css></link>
-    <link rel="stylesheet" href="css/materialize.min.css"></link>
+        .box{
+            background: #1e293b;
+            margin: 20px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.4);
+        }
 
-    <script type='text/javascript' src=js/ux/jquery.min.js></script>
-    <script type='text/javascript' src=js/ux/mustache.min.js></script>
-    <script type='text/javascript' src=js/ux/materialize.min.js></script>
-
-    <script type='text/javascript' src=js/normalize.js></script>
-
-    <title>Notification Webhooks</title>
+        button{
+            background: #22c55e;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="box">
+        <h2>Notification Webhook</h2>
+        <p id="status">Checking permission...</p>
 
-        <input type="text" id='input' placeholder="http://domain.webhook/"/>
-        <button id='record' class='waves-effect waves-light btn'> Record</button>
-        <button id='send-test' class='waves-effect waves-light btn'> Send test</button>
-
+        <button onclick="requestNotif()">Request Notification Access</button>
     </div>
 
+    <script src="cordova.js"></script>
 
-    <script type=text/javascript src=cordova.js></script>
-    <script type='text/javascript' src=js/cordova/start.js></script>
-    <script type='text/javascript' src=js/webhook.js></script>
+    <script>
+    function updateStatus(text){
+        document.getElementById("status").innerText = text;
+    }
+
+    function requestNotif(){
+        if (!window.NotifAccess){
+            alert("Plugin NotifAccess tidak ditemukan");
+            return;
+        }
+
+        window.NotifAccess.requestPermission(
+            function(){
+                updateStatus("Permission granted ✅");
+            },
+            function(){
+                updateStatus("Permission denied ❌");
+            }
+        );
+    }
+
+    document.addEventListener('deviceready', function () {
+
+        if (!window.NotifAccess){
+            updateStatus("Plugin NotifAccess belum aktif");
+            return;
+        }
+
+        window.NotifAccess.isEnabled(function (enabled) {
+
+            if (String(enabled) === "1"){
+                updateStatus("Notification Access ENABLED ✅");
+            } else {
+                updateStatus("Notification Access DISABLED ❌");
+            }
+
+        });
+
+    });
+    </script>
+
+</body>
+</html>    <script type='text/javascript' src=js/webhook.js></script>
 
 </body>
 
