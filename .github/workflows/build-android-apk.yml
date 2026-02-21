@@ -35,6 +35,54 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
+      # ✅ Bersihin semua biar gak nyangkut error ENOENT node_modules/notifaccess
+      - name: Clean build folders
+        run: |
+          rm -rf node_modules
+          rm -rf platforms
+          rm -rf plugins
+          rm -f package-lock.json
+
+      - name: Install npm deps (if any)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "No package.json, skipping npm install."
+          fi
+
+      # ✅ Balikin folder plugins dari repo
+      - name: Restore plugins folder
+        run: |
+          git checkout -- plugins || true
+          ls -lah plugins || true
+          ls -lah plugins/notifaccess || true
+
+      - name: Add Android platform
+        run: cordova platform add android
+
+      - name: Install Cordova plugins
+        run: |
+          cordova plugin add https://github.com/coconauts/NotificationListener-cordova
+          cordova plugin add ./plugins/notifaccess --nofetch
+          cordova plugin ls
+
+      - name: Build debug APK
+        run: cordova build android --debug
+
+      - name: Collect APK
+        run: |
+          mkdir -p dist
+          find platforms -type f -name "*.apk" -exec cp {} dist/ \;
+          ls -lah dist
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: notification-webhook-apk
+          path: dist/*.apk
       - name: Show versions (debug)
         run: |
           java -version
