@@ -1,21 +1,8 @@
 {
-  "name": "notification-webhook",
-  "displayName": "Notification Webhook",
+  "name": "notifaccess",
   "version": "1.0.0",
-  "description": "Send Android notifications to webhook",
-  "main": "index.js",
-  "scripts": {
-    "build": "cordova build android --debug",
-    "prepare": "cordova prepare android"
-  },
-  "dependencies": {},
-  "devDependencies": {},
   "cordova": {
-    "platforms": ["android"],
-    "plugins": {
-      "cordova-plugin-whitelist": {},
-      "https://github.com/coconauts/NotificationListener-cordova": {},
-      "plugins/notifaccess": {}
-    }
+    "id": "notifaccess",
+    "platforms": ["android"]
   }
 }
