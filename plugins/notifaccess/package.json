@@ -1,0 +1,9 @@
+{
+  "name": "notifaccess",
+  "version": "1.0.0",
+  "description": "Notification Access Helper",
+  "cordova": {
+    "id": "notifaccess",
+    "platforms": ["android"]
+  }
+}
