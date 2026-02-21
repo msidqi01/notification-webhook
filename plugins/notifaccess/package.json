@@ -1,7 +1,7 @@
 {
-  "name": "notifaccess",
+  "name": "com.dormasaaktif.notifaccess",
   "version": "1.0.0",
-  "description": "Notification Access Helper",
+  "description": "Notification Access Helper (Cordova plugin)",
   "cordova": {
     "id": "com.dormasaaktif.notifaccess",
     "platforms": ["android"]
