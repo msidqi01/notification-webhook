@@ -5,15 +5,15 @@
   "description": "Send Android notifications to webhook",
   "main": "index.js",
   "scripts": {
-    "start": "cordova run android",
-    "build": "cordova build android"
+    "build": "cordova build android --debug",
+    "prepare": "cordova prepare android"
   },
   "dependencies": {},
   "devDependencies": {},
   "cordova": {
-    "platforms": [
-      "android"
-    ],
-    "plugins": {}
+    "platforms": ["android"],
+    "plugins": {
+      "com.dormasaaktif.notifaccess": {}
+    }
   }
 }
