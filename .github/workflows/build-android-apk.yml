@@ -42,19 +42,18 @@ jobs:
           npm -v
           cordova -v
 
-      # OPTIONAL: bersihin biar gak nyangkut cache project (penting kalau kamu sering ubah plugin)
       - name: Clean cordova artifacts
         run: |
           rm -rf platforms plugins node_modules package-lock.json
-          mkdir -p plugins
+          # restore local plugin folder (karena dihapus barusan)
+          git checkout -- plugins/notifaccess || true
 
       - name: Add Android platform
         run: cordova platform add android
 
       - name: Install local plugin (notifaccess)
-        run: cordova plugin add ./plugins/notifaccess
+        run: cordova plugin add ./plugins/notifaccess --nofetch
 
-      # kalau kamu masih pakai plugin notification listener dari coconauts:
       - name: Install notification listener plugin
         run: cordova plugin add https://github.com/coconauts/NotificationListener-cordova
 
