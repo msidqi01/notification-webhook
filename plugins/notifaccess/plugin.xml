@@ -1,34 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        id="com.dormasaaktif.notifaccess"
-        version="1.0.0">
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.dormasaaktif.notificationwebhook"
+        version="1.0.0"
+        xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <name>NotifAccess</name>
+  <name>Notification Webhook</name>
+  <description>Send Android notifications to webhook</description>
+  <author email="you@example.com" href="https://dormasaaktif.my.id">Dormasaaktif</author>
+
+  <content src="index.html" />
+
+  <preference name="AndroidXEnabled" value="true" />
+  <preference name="android-minSdkVersion" value="23" />
+  <preference name="android-targetSdkVersion" value="33" />
 
   <platform name="android">
-
-    <!-- Internet permission (buat kirim webhook) -->
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.INTERNET" />
     </config-file>
-
-    <!-- Notification Listener Service -->
-    <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <service
-          android:name="com.dormasaaktif.notifaccess.NotificationListener"
-          android:label="Notification Listener"
-          android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-          android:exported="true">
-        <intent-filter>
-          <action android:name="android.service.notification.NotificationListenerService" />
-        </intent-filter>
-      </service>
-    </config-file>
-
-    <!-- Pastikan file java ini BENERAN ADA di path ini -->
-    <source-file src="src/android/NotificationListener.java"
-                 target-dir="src/com/dormasaaktif/notifaccess" />
   </platform>
 
-</plugin>
+</widget>
