@@ -1,24 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<plugin id="com.dormasaaktif.notifaccess"
-        version="1.0.0"
-        xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<?xml version="1.0" encoding="utf-8"?>
 
-  <name>NotifAccess</name>
-  <description>Open Notification Listener Settings and check status</description>
-  <license>MIT</license>
-  <keywords>notification,listener,permission,settings</keywords>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="notifaccess"
+        version="1.0.0">
 
-  <js-module src="www/notifaccess.js" name="NotifAccess">
-    <clobbers target="NotifAccess" />
-  </js-module>
+    <name>notifaccess</name>
+    <description>Notification Access Helper</description>
+    <license>MIT</license>
 
-  <platform name="android">
-    <config-file target="res/xml/config.xml" parent="/*">
-      <feature name="NotifAccess">
-        <param name="android-package" value="com.dormasaaktif.notifaccess.NotifAccess" />
-      </feature>
-    </config-file>
+    <platform name="android">
 
-    <source-file src="src/android/NotifAccess.java" target-dir="src/com/dormasaaktif/notifaccess" />
-  </platform>
+        <!-- Permission WAJIB -->
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"/>
+
+        </config-file>
+
+        <!-- Service WAJIB untuk notification listener -->
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+
+            <service
+                android:name="com.dormasaaktif.notifaccess.NotificationListener"
+                android:label="Notification Listener"
+                android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+
+                <intent-filter>
+                    <action android:name="android.service.notification.NotificationListenerService"/>
+                </intent-filter>
+
+            </service>
+
+        </config-file>
+
+        <!-- Source Java -->
+        <source-file
+            src="src/android/NotificationListener.java"
+            target-dir="app/src/main/java/com/dormasaaktif/notifaccess"/>
+
+    </platform>
+
 </plugin>
